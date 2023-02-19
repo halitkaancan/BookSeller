@@ -10,7 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../product/component/general_color.dart';
 import '../../product/component/search_bar.dart';
-import '../../product/model/category_model.dart';
 import '../../product/text_style/text_style.dart';
 import '../best_seller/model/category_model.dart';
 import '../best_seller/service/category_service.dart';
