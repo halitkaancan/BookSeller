@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mobileapp/feature/home/homeview.dart';
+import 'package:mobileapp/feature/home/view/homeview.dart';
 
 import '../../product/component/general_button.dart';
 import '../../product/component/general_color.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobileapp/feature/login/login.dart';
 import 'package:mobileapp/product/component/general_button.dart';
 
-import '../../product/component/skip_button.dart';
+import '../../../product/component/skip_button.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
