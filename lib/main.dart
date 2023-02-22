@@ -4,7 +4,6 @@ import 'package:mobileapp/feature/home/view/homeview.dart';
 
 import 'feature/best_seller/view/best_seller.dart';
 import 'feature/book_details/view/book_details.dart';
-import 'feature/login/login.dart';
 import 'feature/splash/view/splash.dart';
 
 void main() {

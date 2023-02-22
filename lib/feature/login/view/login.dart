@@ -2,23 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobileapp/feature/home/view/homeview.dart';
+import 'package:mobileapp/feature/login/viewmodel/login_viewmodel.dart';
 
-import '../../product/component/general_button.dart';
-import '../../product/component/general_color.dart';
-import '../../product/component/general_paddin.dart';
-import '../../product/component/general_text.dart';
-import '../register/register.dart';
+import '../../../product/component/general_button.dart';
+import '../../../product/component/general_color.dart';
+import '../../../product/component/general_paddin.dart';
+import '../../../product/component/general_text.dart';
+import '../../register/view/register_view.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({
+class LoginView extends StatefulWidget {
+  const LoginView({
     super.key,
   });
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginViewState extends LoginViewModel {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _obscureText = true;
+
+  void login(String email, password) {
+    try {} catch (e) {
+      print(e.toString());
+    }
+  }
+
   bool isChecked = false;
   _checkboxDegisti(isChecked) {
     setState(() {
@@ -48,30 +59,44 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     heightSpace(115),
-                    textTypes("Welcome Back!", 16),
-                    textTypes("Login to your account", 20),
                     SizedBox(
                       height: 80.h,
                     ),
                     textTypes("E-mail", 16),
                     heightSpace(8),
-                    const SizedBox(
-                        child: TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "john@mail.com"),
-                    )),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xFFF4F4FF),
+                        hintText: 'john@mail.com',
+                        border: InputBorder.none,
+                      ),
+                    ),
                     heightSpace(24),
-                    textTypes("Password", 16),
-                    heightSpace(8),
-                    const SizedBox(
-                        child: TextField(
-                      obscureText: true,
+                    TextFormField(
+                      obscureText: _obscureText,
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "••••••••••••"),
-                    )),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          icon: Icon(_obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFFF4F4FF),
+                        hintText: '**********',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                    heightSpace(8),
                     Row(
                       children: [
                         Expanded(
@@ -81,15 +106,15 @@ class _LoginPageState extends State<LoginPage> {
                                 activeColor: ColorBlueMagenta(),
                                 title: const Text(
                                   'Remember me',
-                                  //burada bir hata var ColorBlueMagenta(), ekleyemiyorum
-
                                   style: TextStyle(color: Color(0xFF6251DD)),
                                 ),
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
                                 value: true,
-                                onChanged: (bool? i) {
-                                  setState(() {});
+                                onChanged: (bool? isChecked) {
+                                  setState(() {
+                                    isChecked = isChecked!;
+                                  });
                                 },
                               ),
                             ],
@@ -100,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const RegisterPage()),
+                                  builder: (context) => const RegisterView()),
                             );
                           },
                           child: CustomText("Register"),
@@ -109,13 +134,29 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Expanded(child: heightSpace(10)),
                     GeneralButton(
-                        buttonName: "Login",
-                        onPressed: () {
-                          Navigator.push(
-                              context,
+                      buttonText: "Login",
+                      onPressed: () async {
+                        await loginButton(
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                        );
+
+                        if (token!.isEmpty || token == null) {
+                          // ignore: use_build_context_synchronously
+                          await showDialog(
+                            context: context,
+                            builder: (context) => const AlertDialog(
+                              title: Text("Error"),
+                              contentPadding: EdgeInsets.all(20),
+                            ),
+                          );
+                        } else {
+                          Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => HomeView()));
-                        }),
+                        }
+                      },
+                    ),
                     heightSpace(40),
                   ],
                 ),

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import '../../home/model/model_category.dart';
-import '../../home/model/model_product.dart';
 
 // abstract class IBestSellerService {
 //   IBestSellerService(this.dio);

@@ -66,41 +66,44 @@ class _HomeViewState extends HomeViewModel {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: getList(),
-        builder: (context, snapshot) => Padding(
-          padding: EdgeInsets.only(
-            left: 20.w,
-          ),
-          child: Column(children: [
-            SizedBox(
-                width: double.infinity, height: 42.h, child: BookTypesButton()),
-            SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.h,
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: EdgeInsets.only(
+                left: 20.w,
               ),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: SearchBar(),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 40.h),
-                child: Column(
-                  children: [
-                    Expanded(child: categoryNameWidget()),
-                  ],
+              child: Column(children: [
+                SizedBox(
+                    width: double.infinity,
+                    height: 42.h,
+                    child: BookTypesButton()),
+                SizedBox(
+                  height: 20.h,
                 ),
-              ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: SearchBar(),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 40.h),
+                    child: Column(
+                      children: [
+                        Expanded(child: categoryNameWidget()),
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
             ),
-          ]),
-        ),
-      ),
     );
   }
 
@@ -122,7 +125,10 @@ class _HomeViewState extends HomeViewModel {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BestSellerPage()));
+                            builder: (context) => BestSellerPage(
+                                  title: resourceCategory[index].name ?? "",
+                                  list: resourceProductHome[index],
+                                )));
                   },
                   child: Text(
                     "View All",
@@ -140,64 +146,62 @@ class _HomeViewState extends HomeViewModel {
                 SizedBox(
                   width: 370.w,
                   height: 140.h,
-                  child: FutureBuilder(
-                    future: getListProduct(),
-                    builder: (context, snapshot) => ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: resourceProduct.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 10.h),
-                            child: Row(
-                              children: [
-                                SizedBox(
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: resourceProductHome[index].length,
+                    itemBuilder: (context, index1) {
+                      return Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 10.h),
+                          child: Row(
+                            children: [
+                              SizedBox(
                                   width: 80.w,
                                   height: 120.h,
-                                  child: Image.asset(
-                                    //image: Image(productService.getProductImage(cover: resourceProduct[index].cover ?? "")),
-                                    "assets/dune.png",
-                                    // productService.getProductImage(
-                                    //     cover:
-                                    //         resourceProduct[index].cover ?? ""),
-                                  ),
+                                  child: Image.network(
+                                      resourceProductHome[index][index1]
+                                              .cover ??
+                                          "")),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10.h),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      //
+                                      resourceProductHome[index][index1].name ??
+                                          "",
+                                      style: CustomTextStyle
+                                          .generalButtonTextStyle12,
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Text(
+                                      resourceProductHome[index][index1]
+                                              .author ??
+                                          "",
+                                      style: CustomTextStyle
+                                          .generalButtonTextStyle10,
+                                    ),
+                                    SizedBox(
+                                      height: 44.h,
+                                    ),
+                                    Text(
+                                      resourceProductHome[index][index1]
+                                          .price
+                                          .toString(),
+                                      style: CustomTextStyle
+                                          .generalButtonTextStyleBlueMagenta16,
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10.h),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        //
-                                        resourceProduct[index].name ?? "",
-                                        style: CustomTextStyle
-                                            .generalButtonTextStyle12,
-                                      ),
-                                      SizedBox(
-                                        height: 4.h,
-                                      ),
-                                      Text(
-                                        resourceProduct[index].author ?? "",
-                                        style: CustomTextStyle
-                                            .generalButtonTextStyle10,
-                                      ),
-                                      SizedBox(
-                                        height: 44.h,
-                                      ),
-                                      Text(
-                                        resourceProduct[index].price.toString(),
-                                        style: CustomTextStyle
-                                            .generalButtonTextStyleBlueMagenta16,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

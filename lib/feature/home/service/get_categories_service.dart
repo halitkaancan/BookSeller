@@ -10,7 +10,7 @@ abstract class ICategoryService {
 
   Future<List<CategoryModel>?> getCategories();
 
-  Future<List<BestSellerModel>?> getProduct();
+  Future<List<BestSellerModel>?> getProduct(int id);
   Future<String> getProductImage({required String cover});
 }
 
@@ -30,8 +30,8 @@ class CategoryService extends ICategoryService {
   }
 
   @override
-  Future<List<BestSellerModel>> getProduct() async {
-    final response = await dio.get('products/1');
+  Future<List<BestSellerModel>> getProduct(int id) async {
+    final response = await dio.get('/products/$id');
     if (response.statusCode == 200) {
       final jsonBody = response.data["product"];
       if (jsonBody is List) {
@@ -44,7 +44,8 @@ class CategoryService extends ICategoryService {
   @override
   Future<String> getProductImage({required String cover}) async {
     try {
-      final response = await dio.post('cover_image', data: {'fileName': cover});
+      final response =
+          await dio.post('/cover_image', data: {'fileName': cover});
       if (response.statusCode == 200) {
         final jsonBody = response.data["action_product_image"]["url"];
         return jsonBody;

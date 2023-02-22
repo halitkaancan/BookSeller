@@ -11,7 +11,6 @@ abstract class BestSellerViewModel extends State<BestSellerPage>
   late final ICategoryService productService;
 
   List<BestSellerModel> resourceProduct = [];
-  List<BestSellerModel> resourceProductImage = [];
 
   bool isLoading = false;
 
@@ -30,8 +29,7 @@ abstract class BestSellerViewModel extends State<BestSellerPage>
   }
 
   Future<List<BestSellerModel>> getListProduct() async {
-    print("object");
-    resourceProduct = await productService.getProduct() ?? [];
+    resourceProduct = await productService.getProduct(1) ?? [];
 
     await Future.forEach(resourceProduct, (element) async {
       element.cover =
@@ -44,6 +42,6 @@ abstract class BestSellerViewModel extends State<BestSellerPage>
   }
 
   Future<void> newMethod() async {
-    resourceProduct = await productService.getProduct() ?? [];
+    resourceProduct = await productService.getProduct(1) ?? [];
   }
 }

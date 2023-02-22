@@ -9,11 +9,10 @@ import '../view/homeview.dart';
 
 abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin {
   late final ICategoryService categoryService;
-  late final ICategoryService productService;
 
   List<CategoryModel> resourceCategory = [];
-  List<BestSellerModel> resourceProduct = [];
-  List<BestSellerModel> resourceProductImageHVM = [];
+  List<List<BestSellerModel>> resourceProductHome = [];
+  //List<BestSellerModel> resourceProductImageHVM = [];
 
   bool isLoading = false;
 
@@ -26,17 +25,34 @@ abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin {
   @override
   void initState() {
     categoryService = CategoryService(service);
-    productService = CategoryService(service);
+
+    getList();
     // getList();
     // TODO: implement initState
     super.initState();
   }
 
   Future<void> getList() async {
+    changeLoading();
     resourceCategory = await categoryService.getCategories() ?? [];
+    await Future.forEach(resourceCategory,
+        (element) async => await getListProduct(element.id ?? 0));
+
+    changeLoading();
   }
 
-  Future<void> getListProduct() async {
-    resourceProduct = await productService.getProduct() ?? [];
+  Future<void> getListProduct(int id) async {
+    List<BestSellerModel> list = await categoryService.getProduct(id) ?? [];
+    await getListProduct1(list);
+    resourceProductHome.add(list);
+  }
+
+  Future<void> getListProduct1(List<BestSellerModel> model) async {
+    await Future.forEach(model, (element) async {
+      element.cover =
+          await categoryService.getProductImage(cover: element.cover ?? "");
+      model.firstWhere((element2) => element.id == element2.id).cover =
+          element.cover;
+    });
   }
 }

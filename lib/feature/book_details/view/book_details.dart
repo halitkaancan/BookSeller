@@ -8,19 +8,22 @@ import 'package:mobileapp/product/component/general_paddin.dart';
 
 import '../../../product/component/general_color.dart';
 import '../../../product/text_style/text_style.dart';
+import '../../home/model/model_category.dart';
 
 class BookDetailsView extends StatefulWidget {
-  const BookDetailsView({
+  BookDetailsView({
     super.key,
-    required this.bestSellerModel,
+    required this.content, //required this.list,
   });
-  final BestSellerModel bestSellerModel;
+  final BestSellerModel content;
 
   @override
   State<BookDetailsView> createState() => _BookDetailsViewState();
 }
 
 class _BookDetailsViewState extends State<BookDetailsView> {
+  bool _isChange = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,91 +55,92 @@ class _BookDetailsViewState extends State<BookDetailsView> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding:
+            EdgeInsets.only(right: 20.w, left: 20.w, top: 33, bottom: 40.h),
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
               children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 100.w, top: 33.h, bottom: 20.h),
-                  child: Image.asset("assets/logo.png"),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 15.w),
-                  child: IconButton(
-                    onPressed: () {},
-                    splashRadius: 25, // Yayılma yarıçapı
-                    iconSize: 30,
-                    icon: const Icon(
-                      Icons.favorite_border,
-                    ),
-
-                    color: ColorBlueMagenta(),
-                    highlightColor: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 40.h, left: 20.w, right: 20.w),
-                child: Column(
+                Row(
                   children: [
-                    SizedBox(
-                      height: 20.h,
+                    Padding(
+                      padding: EdgeInsets.only(left: 110.h),
+                      child: Row(
+                        children: [
+                          Container(
+                              width: 150.w,
+                              height: 225.h,
+                              child: Image.network(widget.content.cover ?? "")),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.bestSellerModel.name ?? "",
-                          style: CustomTextStyle.generalButtonTextStyle20,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 0.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(widget.bestSellerModel.author ?? "",
-                            style: CustomTextStyle
-                                .generalButtonTextStyleColorBlack16)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                    Row(
-                      children: [Text("Summary")],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: Text(
-                            widget.bestSellerModel.description ?? "",
-                            maxLines: 7,
-                            textAlign: TextAlign.right,
-                            softWrap: true,
-                            style: CustomTextStyle
-                                .generalButtonTextStyleColorBlack16,
+                    Padding(
+                      padding: EdgeInsets.only(left: 45.w, bottom: 170.h),
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundColor: ColorLightWhite1(),
+                            child: IconButton(
+                              style: ButtonStyle(
+                                  iconColor:
+                                      MaterialStateProperty.all(Colors.yellow)),
+                              onPressed: () {
+                                setState(() {
+                                  _isChange = !_isChange;
+                                });
+                              },
+                              // Yayılma yarıçapı
+                              iconSize: 30,
+                              icon: Icon(
+                                _isChange == true
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                              ),
+                              color: ColorBlueMagenta(),
+                            ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     )
                   ],
                 ),
-              ),
-            ),
-            GeneralButton(),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
+                    widget.content.name ?? "",
+                    style: CustomTextStyle.generalButtonTextStyle20,
+                  ),
+                  SizedBox(height: 20.h),
+                ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Opacity(
+                    opacity: 0.6,
+                    child: Text(widget.content.author ?? "",
+                        style:
+                            CustomTextStyle.generalButtonTextStyleColorBlack16),
+                  )
+                ]),
+                SizedBox(height: 10.h),
+                Row(children: [
+                  Container(
+                    width: 350.w,
+                    height: 208.h,
+                    child: Text(
+                      widget.content.description ?? "",
+                      maxLines: 7,
+                      textAlign: TextAlign.left,
+                      softWrap: true,
+                      style: CustomTextStyle.generalButtonTextStyleColorBlack16,
+                    ),
+                  )
+                ]),
+                SizedBox(height: 90.h),
+                GeneralButton(
+                  buttonText: widget.content.price.toString(),
+                  secondText: "Buy Now",
+                ),
+              ],
+            )
           ],
         ),
       ),

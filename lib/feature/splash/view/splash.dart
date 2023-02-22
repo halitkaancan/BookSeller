@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobileapp/feature/login/login.dart';
+import 'package:mobileapp/feature/home/view/homeview.dart';
 import 'package:mobileapp/product/component/general_button.dart';
 
 import '../../../product/component/skip_button.dart';
+import '../../login/view/login.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -20,7 +21,8 @@ class _SplashPageState extends State<SplashPage> {
 
     // Bu kısımda Splash ekranda kalacak zamanı belirleyebilirsiniz.
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeView()));
     });
   }
 
@@ -36,10 +38,10 @@ class _SplashPageState extends State<SplashPage> {
             child: Column(
               children: [
                 GeneralButton(
-                    buttonName: "Login",
+                    buttonText: "Login",
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
+                          MaterialPageRoute(builder: (context) => LoginView()));
                     }),
                 SkipButton(),
               ],

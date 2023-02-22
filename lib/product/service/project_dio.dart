@@ -2,6 +2,6 @@ import 'package:dio/dio.dart';
 
 mixin ProjectDioMixin {
   final service = Dio(BaseOptions(
-      baseUrl: "https://assign-api.piton.com.tr/api/rest/",
+      baseUrl: "https://assign-api.piton.com.tr/api/rest",
       headers: {"content-type": "application/json"}));
 }
