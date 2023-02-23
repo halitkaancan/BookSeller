@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobileapp/feature/home/view/homeview.dart';
 import 'package:mobileapp/feature/login/viewmodel/login_viewmodel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../product/component/general_button.dart';
 import '../../../product/component/general_color.dart';
 import '../../../product/component/general_paddin.dart';
@@ -24,24 +22,10 @@ class _LoginViewState extends LoginViewModel {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   void login(String email, password) {
     try {} catch (e) {
       print(e.toString());
     }
-  }
-
-  bool _isChecked = false;
-
-  void initState() {
-    // token buraya null geliyor
-    super.initState();
-  }
-
-  void upDateSharedPreferences(String token) async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setString('token', token);
   }
 
   @override
@@ -117,10 +101,10 @@ class _LoginViewState extends LoginViewModel {
                                 ),
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
-                                value: _isChecked,
+                                value: isChecked,
                                 onChanged: (bool? isChecked) {
                                   setState(() {
-                                    _isChecked = isChecked!;
+                                    isChecked = isChecked!;
                                   });
                                 },
                               ),
@@ -144,35 +128,11 @@ class _LoginViewState extends LoginViewModel {
                       buttonText: "Login",
                       onPressed: () async {
                         await loginButton(
+                          //trim:stringin başındaki ve sonundaki boşlukları kaldırır
                           _emailController.text.trim(),
                           _passwordController.text.trim(),
                         );
-
-                        if (token!.isEmpty || token == null) {
-                          // ignore: use_build_context_synchronously
-                          await showDialog(
-                            context: context,
-                            builder: (context) => const AlertDialog(
-                              title: Text("Error"),
-                              contentPadding: EdgeInsets.all(20),
-                            ),
-                          );
-                        } else {
-                          if (_isChecked) {
-                            upDateSharedPreferences(token ?? "");
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomeView(token: token!)),
-                                (route) => route.isFirst);
-                          } else {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomeView(token: "token!")),
-                                (route) => route.isFirst);
-                          }
-                        }
+                        checkToken();
                       },
                     ),
                     heightSpace(40),
