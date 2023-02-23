@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobileapp/feature/register/viewmodel/register_viewmodel.dart';
+import 'package:mobileapp/product/component/general_pictures.dart';
 
 import '../../../product/component/general_button.dart';
 import '../../../product/component/general_color.dart';
@@ -20,13 +21,6 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends RegisterViewModel {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool isChecked = false;
-  bool _isRegistering = false;
-
   _checkboxDegisti(isChecked) {
     setState(() {
       isChecked = !isChecked;
@@ -44,7 +38,7 @@ class _RegisterViewState extends RegisterViewModel {
               padding: GeneralPadding(),
               child: Form(
                 ////FORM WIDGETINI ARASITR
-                key: _formKey,
+                key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,7 +47,7 @@ class _RegisterViewState extends RegisterViewModel {
                       child: SizedBox(
                         width: 100.w,
                         height: 65.h,
-                        child: Logo(),
+                        child: LogoSVG(),
                       ),
                     ),
                     heightSpace(115),
@@ -63,12 +57,12 @@ class _RegisterViewState extends RegisterViewModel {
                       height: 80.h,
                     ),
                     TextFormField(
-                      controller: _nameController,
+                      controller: nameController,
                       decoration: const InputDecoration(
                         filled: true,
                         fillColor: Color(0xFFF4F4FF),
                         hintText: 'John Doe',
-                        border: InputBorder.none,
+                        border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -79,7 +73,7 @@ class _RegisterViewState extends RegisterViewModel {
                     ),
                     heightSpace(24),
                     TextFormField(
-                      controller: _emailController,
+                      controller: emailController,
                       decoration: const InputDecoration(
                         filled: true,
                         fillColor: Color(0xFFF4F4FF),
@@ -99,12 +93,12 @@ class _RegisterViewState extends RegisterViewModel {
                     ),
                     heightSpace(24),
                     TextFormField(
-                      controller: _passwordController,
+                      controller: passwordController,
                       decoration: const InputDecoration(
                         filled: true,
                         fillColor: Color(0xFFF4F4FF),
                         hintText: '**********',
-                        border: InputBorder.none,
+                        border: OutlineInputBorder(),
                       ),
                       obscureText: true,
                       validator: (value) {
@@ -116,23 +110,8 @@ class _RegisterViewState extends RegisterViewModel {
                     ),
                     heightSpace(8),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: CheckboxListTile(
-                            activeColor: ColorBlueMagenta(),
-                            title: const Text(
-                              'Remember me',
-
-                              //burada bir hata var ColorBlueMagenta(), ekleyemiyorum
-                              style: TextStyle(color: Color(0xFF6251DD)),
-                            ),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            value: true,
-                            onChanged: (bool? i) {
-                              setState(() {});
-                            },
-                          ),
-                        ),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -150,8 +129,8 @@ class _RegisterViewState extends RegisterViewModel {
                       style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, 60.h),
                           backgroundColor: const Color(0xFFEF6B4A)),
-                      onPressed: _isRegistering ? null : _register,
-                      child: _isRegistering
+                      onPressed: isRegistering ? null : registerNow,
+                      child: isRegistering
                           ? CircularProgressIndicator()
                           : Text(
                               'Register',
@@ -171,41 +150,10 @@ class _RegisterViewState extends RegisterViewModel {
     );
   }
 
-  SvgPicture Logo() => SvgPicture.asset('assets/logo.svg');
-
   SizedBox heightSpace(double HeightSpace) {
     return SizedBox(
       height: HeightSpace.h,
     );
-  }
-
-  Future<void> _register() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isRegistering = true;
-      });
-
-      final success = await register(_emailController.text,
-          _nameController.text, _passwordController.text);
-
-      setState(() {
-        _isRegistering = false;
-      });
-
-      if (success) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginView()));
-      } else {
-        // ignore: use_build_context_synchronously
-        await showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-            title: Text("Someting went wrong, please try again "),
-            contentPadding: EdgeInsets.all(20),
-          ),
-        );
-      }
-    }
   }
 
   Row textTypes(String text, double fontSize) {

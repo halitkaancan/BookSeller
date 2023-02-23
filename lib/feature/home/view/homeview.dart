@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobileapp/feature/best_seller/view/best_seller.dart';
 import 'package:mobileapp/feature/home/viewmodel/home_viewmodel.dart';
+import 'package:mobileapp/product/component/general_pictures.dart';
 import '../../../product/component/general_color.dart';
 import '../../../product/component/search_bar.dart';
 import '../../../product/text_style/text_style.dart';
@@ -26,19 +27,6 @@ class _HomeViewState extends HomeViewModel {
   List<CategoryModel>? categoriesList = [];
   List<BestSellerModel>? productList = [];
 
-  final List<String> BookTypes = [
-    'All',
-    'Classic',
-    'Horror',
-    'Romance',
-    'Sci-Fi'
-  ];
-  List<bool> _pressedList = [false, false, false, false, false];
-
-  String _getButtonName(int index) {
-    return '${BookTypes[index]}';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,18 +35,18 @@ class _HomeViewState extends HomeViewModel {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: Padding(
-          padding: EdgeInsets.only(left: 20).h,
+          padding: EdgeInsets.only(left: 20.h),
           child: SizedBox(
             width: 50.w,
             height: 32.h,
-            child: SvgPicture.asset('assets/logo.svg'),
+            child: LogoSVG(),
           ),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(
-              right: 20,
-              top: 30,
+            padding: EdgeInsets.only(
+              right: 20.w,
+              top: 30.h,
             ).h,
             child: Text(
               'Catalog',
@@ -68,7 +56,7 @@ class _HomeViewState extends HomeViewModel {
         ],
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -214,51 +202,6 @@ class _HomeViewState extends HomeViewModel {
     );
   }
 
-  // SizedBox bookCardWidget() {
-  //   return SizedBox(
-  //     width: 210.w,
-  //     height: 140.h,
-  //     child: Card(
-  //       child: Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-  //         child: Row(
-  //           children: [
-  //             SizedBox(
-  //               width: 80.w,
-  //               height: 120.h,
-  //               child: Image.asset(
-  //                 productService.getProductImage(cover: resourceProduct[index].cover!)
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.only(top: 10.h),
-  //               child: Column(
-  //                 children: [
-  //                   SizedBox(
-  //                     height: 4.h,
-  //                   ),
-  //                   Text(
-  //                     "data",
-  //                     style: CustomTextStyle.generalButtonTextStyle10,
-  //                   ),
-  //                   SizedBox(
-  //                     height: 44.h,
-  //                   ),
-  //                   Text(
-  //                     "data",
-  //                     style:
-  //                         CustomTextStyle.generalButtonTextStyleBlueMagenta16,
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   ListView BookTypesButton() {
     bool isPressed;
     return ListView.builder(
@@ -269,7 +212,7 @@ class _HomeViewState extends HomeViewModel {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 9).w,
             child: ElevatedButton(
-              key: ValueKey(_getButtonName(index)),
+              key: ValueKey(getButtonName(index)),
               onPressed: () {
                 setState(() {
                   _selectedIndex = index;
@@ -289,10 +232,9 @@ class _HomeViewState extends HomeViewModel {
                 ),
               ),
               child: Text(
-                _getButtonName(index),
+                getButtonName(index),
                 style: const TextStyle(
                     color: Colors.black,
-                    //color: Color.fromARGB(9, 9, 55, 1), renk böyle olmalı ama gözükmüyor
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
@@ -300,6 +242,4 @@ class _HomeViewState extends HomeViewModel {
           );
         });
   }
-
-  SvgPicture Logo() => SvgPicture.asset('assets/logo.svg');
 }

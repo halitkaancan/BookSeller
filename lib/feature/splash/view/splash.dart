@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobileapp/product/component/general_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../../../product/component/general_color.dart';
+import '../../../product/component/general_pictures.dart';
 import '../../../product/component/skip_button.dart';
-import '../../home/view/homeview.dart';
-import '../../login/view/login.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({
+import '../modelview/splash_modelview.dart';
+
+class SplashView extends StatefulWidget {
+  const SplashView({
     super.key,
   });
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  _SplashViewState createState() => _SplashViewState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashViewState extends SplashModelView {
   @override
   void initState() {
     super.initState();
@@ -26,12 +25,12 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1D4E),
+      backgroundColor: MidnightBlue(),
       body: Column(
         children: [
-          Expanded(child: Center(child: SvgPicture.asset('assets/logo.svg'))),
+          Expanded(child: Center(child: LogoSVG())),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 39),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 39.h),
             child: Column(
               children: [
                 GeneralButton(
@@ -39,29 +38,12 @@ class _SplashPageState extends State<SplashPage> {
                     onPressed: () async {
                       await checkLoginStatus();
                     }),
-                SkipButton(),
+                const SkipButton(),
               ],
             ),
           )
         ],
       ),
     );
-  }
-
-  checkLoginStatus() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? token = sharedPreferences.getString("token");
-
-    if (token != null) {
-      // Token varsa ana sayfaya yönlendirin.
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => HomeView(token: token)),
-          (route) => route.isFirst);
-    } else {
-      // Token yoksa giriş sayfasına yönlendirin.
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginView()),
-          (route) => route.isFirst);
-    }
   }
 }

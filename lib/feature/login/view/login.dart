@@ -165,6 +165,12 @@ class _LoginViewState extends LoginViewModel {
                                     builder: (context) =>
                                         HomeView(token: token!)),
                                 (route) => route.isFirst);
+                          } else {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomeView(token: "token!")),
+                                (route) => route.isFirst);
                           }
                         }
                       },

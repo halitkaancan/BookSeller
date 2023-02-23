@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-
 import '../../best_seller/model/model_best_seller.dart';
 import '../model/model_category.dart';
 import '../service/get_categories_service.dart';
@@ -9,10 +7,20 @@ import '../view/homeview.dart';
 
 abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin {
   late final ICategoryService categoryService;
-
   List<CategoryModel> resourceCategory = [];
   List<List<BestSellerModel>> resourceProductHome = [];
-  //List<BestSellerModel> resourceProductImageHVM = [];
+  // ignore: non_constant_identifier_names
+  final List<String> BookTypes = [
+    'All',
+    'Classic',
+    'Horror',
+    'Romance',
+    'Sci-Fi'
+  ];
+
+  String getButtonName(int index) {
+    return BookTypes[index];
+  }
 
   bool isLoading = false;
 
@@ -25,10 +33,7 @@ abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin {
   @override
   void initState() {
     categoryService = CategoryService(service);
-
     getList();
-    // getList();
-    // TODO: implement initState
     super.initState();
   }
 
