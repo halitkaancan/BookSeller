@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobileapp/feature/best_seller/service/best_seller_service.dart';
 
 import '../../../product/service/project_dio.dart';
 import '../../home/service/get_categories_service.dart';

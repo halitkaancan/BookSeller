@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import '../../best_seller/model/model_best_seller.dart';
 import '../model/model_category.dart';

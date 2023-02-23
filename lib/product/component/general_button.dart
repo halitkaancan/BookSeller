@@ -5,7 +5,7 @@ import 'package:mobileapp/product/component/general_color.dart';
 import '../text_style/text_style.dart';
 
 class GeneralButton extends StatelessWidget {
-  GeneralButton(
+  const GeneralButton(
       {super.key, this.onPressed, required this.buttonText, this.secondText});
 
   final void Function()? onPressed;
@@ -20,7 +20,7 @@ class GeneralButton extends StatelessWidget {
           backgroundColor: ColorCinnabar()),
       child: secondText == null
           ? Text(
-              buttonText ?? '',
+              buttonText,
               style: CustomTextStyle.generalButtonTextStyle,
             )
           : Row(

@@ -12,7 +12,8 @@ import '../../best_seller/model/model_best_seller.dart';
 import '../model/model_category.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  const HomeView({super.key, required this.token});
+  final String token;
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -126,6 +127,7 @@ class _HomeViewState extends HomeViewModel {
                         context,
                         MaterialPageRoute(
                             builder: (context) => BestSellerPage(
+                                  token: widget.token,
                                   title: resourceCategory[index].name ?? "",
                                   list: resourceProductHome[index],
                                 )));

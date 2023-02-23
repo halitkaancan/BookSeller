@@ -12,8 +12,14 @@ import '../../home/model/model_category.dart';
 import '../model/model_best_seller.dart';
 
 class BestSellerPage extends StatefulWidget {
-  BestSellerPage({super.key, required this.list, required this.title});
+  BestSellerPage(
+      {super.key,
+      required this.list,
+      required this.title,
+      required this.token});
   final List<BestSellerModel> list;
+  final String token;
+
   final String title;
 
   @override
@@ -70,6 +76,7 @@ class _BestSellerPageState extends BestSellerViewModel {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookDetailsView(
+                            token: widget.token,
                             //list: [],
                             content: widget.list[index],
                           ),

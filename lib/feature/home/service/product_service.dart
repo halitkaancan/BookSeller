@@ -12,7 +12,6 @@ abstract class ICategoryService {
 class CategoryService extends ICategoryService {
   CategoryService(Dio dio) : super(dio);
 
-  @override
   Future<List<BestSellerModel>?> getCategories() async {
     final response = await dio.get('/categories');
     if (response.statusCode == 200) {

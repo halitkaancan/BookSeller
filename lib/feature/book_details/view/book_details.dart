@@ -1,29 +1,84 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobileapp/feature/best_seller/model/model_best_seller.dart';
 import 'package:mobileapp/product/component/general_button.dart';
-import 'package:mobileapp/product/component/general_paddin.dart';
-
+import 'package:mobileapp/product/service/project_dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../product/component/general_color.dart';
 import '../../../product/text_style/text_style.dart';
-import '../../home/model/model_category.dart';
 
 class BookDetailsView extends StatefulWidget {
   BookDetailsView({
     super.key,
-    required this.content, //required this.list,
+    required this.content,
+    required this.token, //required this.list,
   });
   final BestSellerModel content;
+  final String token;
 
   @override
   State<BookDetailsView> createState() => _BookDetailsViewState();
 }
 
-class _BookDetailsViewState extends State<BookDetailsView> {
-  bool _isChange = false;
+class _BookDetailsViewState extends State<BookDetailsView>
+    with ProjectDioMixin {
+  bool _isPressed = false;
 
+  @override
+  Map<String, dynamic> getJsonFromJWT(String splittedToken) {
+    String normalizedSource = base64Url.normalize(splittedToken);
+    return jsonDecode(utf8.decode(base64Url.decode(normalizedSource)));
+  }
+
+  String getUserId() {
+    final Map<String, dynamic> decodedToken =
+        getJsonFromJWT(widget.token.split(".")[1]);
+
+    final String userId =
+        decodedToken["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
+
+    print(userId);
+
+    return userId;
+  }
+
+  void _onButtonPressed() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('buttonClicked', true);
+  }
+
+  bool isButtonClicked = false;
+
+  void _loadButtonClickedStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getBool('buttonClicked') ?? false;
+    setState(() {
+      isButtonClicked = value;
+    });
+  }
+
+  Future<void> like({required int productId}) async {
+    await service.post("/like",
+        data: {
+          "user_id": int.parse(getUserId()),
+          "product_id": productId,
+        },
+        options: Options(headers: {"Authorization": "Bearer ${widget.token}"}));
+  }
+
+  Future<void> unlike({required int productId}) async {
+    service.post("/unlike",
+        data: {
+          "user_id": int.parse(getUserId()),
+          "product_id": productId,
+        },
+        options: Options(headers: {"Authorization": "Bearer ${widget.token}"}));
+  }
+
+//shared preferences ekleyeceğim !!!!!!!
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,13 +142,13 @@ class _BookDetailsViewState extends State<BookDetailsView> {
                                       MaterialStateProperty.all(Colors.yellow)),
                               onPressed: () {
                                 setState(() {
-                                  _isChange = !_isChange;
+                                  _isPressed = !_isPressed;
                                 });
                               },
                               // Yayılma yarıçapı
                               iconSize: 30,
                               icon: Icon(
-                                _isChange == true
+                                _isPressed == true
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                               ),

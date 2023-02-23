@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mobileapp/feature/home/view/homeview.dart';
-
-import 'feature/best_seller/view/best_seller.dart';
-import 'feature/book_details/view/book_details.dart';
 import 'feature/splash/view/splash.dart';
 
 void main() {
