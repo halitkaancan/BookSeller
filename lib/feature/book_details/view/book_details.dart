@@ -1,21 +1,15 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobileapp/feature/best_seller/model/model_best_seller.dart';
 import 'package:mobileapp/feature/book_details/viewmodel/book_details_viewmodel.dart';
 import 'package:mobileapp/product/component/general_button.dart';
-import 'package:mobileapp/product/service/project_dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../product/component/general_color.dart';
-import '../../../product/text_style/text_style.dart';
 
 class BookDetailsView extends StatefulWidget {
-  BookDetailsView({
+  const BookDetailsView({
     super.key,
     required this.content,
-    required this.token, //required this.list,
+    required this.token,
   });
   final BestSellerModel content;
   final String token;
@@ -24,14 +18,11 @@ class BookDetailsView extends StatefulWidget {
   State<BookDetailsView> createState() => _BookDetailsViewState();
 }
 
-class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
+class _BookDetailsViewState extends BookDetailsViewModel {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 92,
-        backgroundColor: Colors.white,
-        elevation: 0,
         leading: Padding(
           padding: EdgeInsets.only(left: 20.h),
           child: SizedBox(
@@ -48,7 +39,10 @@ class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
               padding: EdgeInsets.only(right: 20.w, top: 40.h, bottom: 20.h),
               child: Text(
                 'Book Details',
-                style: CustomTextStyle.generalButtonTextStyleBlueMagentaBlack20,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: colorBlack()),
               ),
             ),
           )
@@ -80,7 +74,7 @@ class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
                         children: [
                           CircleAvatar(
                             radius: 25,
-                            backgroundColor: ColorLightWhite1(),
+                            backgroundColor: colorLightWhite1(),
                             child: IconButton(
                               style: ButtonStyle(
                                   iconColor:
@@ -97,7 +91,7 @@ class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                               ),
-                              color: ColorBlueMagenta(),
+                              color: colorBlueMagenta(),
                             ),
                           ),
                         ],
@@ -108,7 +102,10 @@ class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text(
                     widget.content.name ?? "",
-                    style: CustomTextStyle.generalButtonTextStyle20,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(color: colorBlack()),
                   ),
                   SizedBox(height: 20.h),
                 ]),
@@ -116,8 +113,10 @@ class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
                   Opacity(
                     opacity: 0.6,
                     child: Text(widget.content.author ?? "",
-                        style:
-                            CustomTextStyle.generalButtonTextStyleColorBlack16),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: colorBlack())),
                   )
                 ]),
                 SizedBox(height: 10.h),
@@ -130,7 +129,10 @@ class _BookDetailsViewState extends BookDetailsViewModel with ProjectDioMixin {
                       maxLines: 7,
                       textAlign: TextAlign.left,
                       softWrap: true,
-                      style: CustomTextStyle.generalButtonTextStyleColorBlack16,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(color: colorBlack()),
                     ),
                   )
                 ]),

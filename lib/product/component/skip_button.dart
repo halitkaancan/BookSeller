@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../text_style/text_style.dart';
-
 class SkipButton extends StatelessWidget {
   const SkipButton({
     super.key,
@@ -11,9 +9,9 @@ class SkipButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: () {},
-        child: Text(
+        child: const Text(
           'Skip',
-          style: CustomTextStyle.generalButtonTextStyle,
+          // style: CustomTextStyle.generalButtonTextStyle,
         ));
   }
 }

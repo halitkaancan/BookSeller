@@ -1,6 +1,6 @@
 class LoginModel {
-  String? email;
-  String? password;
+  late final String? email;
+  late final String? password;
 
   LoginModel({this.email, this.password});
 

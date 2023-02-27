@@ -10,6 +10,14 @@ import '../view/login.dart';
 abstract class LoginViewModel extends State<LoginView> with ProjectDioMixin {
   String? token;
   bool isChecked = false;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool obscureText = true;
+  void login(String email, password) {
+    try {} catch (e) {
+      print(e.toString());
+    }
+  }
 
   late final ILoginService loginService;
 
@@ -53,5 +61,11 @@ abstract class LoginViewModel extends State<LoginView> with ProjectDioMixin {
             (route) => route.isFirst);
       }
     }
+  }
+
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

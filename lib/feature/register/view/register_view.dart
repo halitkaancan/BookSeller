@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobileapp/feature/register/viewmodel/register_viewmodel.dart';
 import 'package:mobileapp/product/component/general_pictures.dart';
-
 import '../../../product/component/general_button.dart';
 import '../../../product/component/general_color.dart';
 import '../../../product/component/general_paddin.dart';
 import '../../../product/component/general_text.dart';
-import '../../../product/text_style/text_style.dart';
 import '../../login/view/login.dart';
 
 class RegisterView extends StatefulWidget {
@@ -35,7 +33,7 @@ class _RegisterViewState extends RegisterViewModel {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraint.maxHeight),
             child: Padding(
-              padding: GeneralPadding(),
+              padding: generalPadding(),
               child: Form(
                 ////FORM WIDGETINI ARASITR
                 key: formKey,
@@ -47,10 +45,11 @@ class _RegisterViewState extends RegisterViewModel {
                       child: SizedBox(
                         width: 100.w,
                         height: 65.h,
-                        child: LogoSVG(),
+                        child: logoSVG(),
                       ),
                     ),
                     heightSpace(115),
+                    //Text(),
                     textTypes("Welcome ", 16),
                     textTypes("Register an account", 20),
                     SizedBox(
@@ -111,31 +110,19 @@ class _RegisterViewState extends RegisterViewModel {
                     heightSpace(8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginView()),
-                            );
-                          },
-                          child: CustomText("Login"),
-                        ),
+                      children: const [
+                        CustomButtonOneName(buttonName: "Register"),
                       ],
                     ),
                     heightSpace(15),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 60.h),
-                          backgroundColor: const Color(0xFFEF6B4A)),
-                      onPressed: isRegistering ? null : registerNow,
-                      child: isRegistering
-                          ? CircularProgressIndicator()
-                          : Text(
-                              'Register',
-                              style: CustomTextStyle.generalButtonTextStyle,
-                            ),
+                    GeneralButton(
+                      buttonText: "Register",
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginView()));
+                      },
                     ),
                     const SizedBox(
                       height: 40,
@@ -170,3 +157,26 @@ class _RegisterViewState extends RegisterViewModel {
     );
   }
 }
+
+// class Text extends StatelessWidget {
+//   final String text;
+//   const Text({
+//     super.key,
+//     required this.text,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         SizedBox(
+//           child: Text("$text",
+//               style: Theme.of(context)
+//                   .textTheme
+//                   .bodyMedium!
+//                   .copyWith(color: colorBlack(), fontWeight: FontWeight.bold)),
+//         ),
+//       ],
+//     );
+//   }
+// }

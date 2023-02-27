@@ -47,4 +47,11 @@ abstract class RegisterViewModel extends State<RegisterView>
       }
     }
   }
+
+  void dispose() {
+    emailController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 }

@@ -25,10 +25,10 @@ class _SplashViewState extends SplashModelView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MidnightBlue(),
+      backgroundColor: midnightBlue(),
       body: Column(
         children: [
-          Expanded(child: Center(child: LogoSVG())),
+          Expanded(child: Center(child: logoSVG())),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 39.h),
             child: Column(

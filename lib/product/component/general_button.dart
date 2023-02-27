@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobileapp/product/component/general_color.dart';
 
-import '../text_style/text_style.dart';
-
 class GeneralButton extends StatelessWidget {
   const GeneralButton(
       {super.key, this.onPressed, required this.buttonText, this.secondText});
@@ -17,11 +15,14 @@ class GeneralButton extends StatelessWidget {
       onPressed: onPressed ?? () {},
       style: ElevatedButton.styleFrom(
           minimumSize: Size(double.infinity, 60.h),
-          backgroundColor: ColorCinnabar()),
+          backgroundColor: colorCinnabar()),
       child: secondText == null
           ? Text(
               buttonText,
-              style: CustomTextStyle.generalButtonTextStyle,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Colors.white),
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,40 +32,25 @@ class GeneralButton extends StatelessWidget {
   }
 }
 
-class TextButtonStyle extends StatelessWidget {
-  const TextButtonStyle({super.key, this.onPressed, this.buttonText});
-  final void Function()? onPressed;
-  final String? buttonText;
+class CustomButtonOneName extends StatelessWidget {
+  final String buttonName;
+  const CustomButtonOneName({
+    super.key,
+    required this.buttonName,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed ?? () {},
-      child:
-          Text(buttonText ?? '', style: CustomTextStyle.generalButtonTextStyle),
+      onPressed: () {},
+      child: Text(
+        "$buttonName",
+        style: TextStyle(
+          color: Color(
+            0xFF6251DD,
+          ),
+        ),
+      ),
     );
   }
 }
-
-// ElevatedButton(
-//       onPressed: onPressed ??
-//           () {
-//             Navigator.pushNamed(context, NextPage!);
-//           },
-//       child: Row(
-//         mainAxisAlignment: (buttonName != null && buttonName2 != null)
-//             ? MainAxisAlignment.spaceBetween
-//             : MainAxisAlignment.center,
-//         children: [
-//           Text(
-//             buttonName ?? buttonName2 ?? "",
-//             style: CustomTextStyle.generalButtonTextStyle,
-//           ),
-//         ],
-//       ),
-//       style: ElevatedButton.styleFrom(
-//           minimumSize: Size(double.infinity, 60.h),
-//           backgroundColor: Color(0xFFEF6B4A)),
-//     );
-//   }
-// }

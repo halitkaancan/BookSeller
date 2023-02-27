@@ -1,19 +1,13 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mobileapp/feature/best_seller/view/best_seller.dart';
 import 'package:mobileapp/feature/home/viewmodel/home_viewmodel.dart';
 import 'package:mobileapp/product/component/general_pictures.dart';
 import '../../../product/component/general_color.dart';
 import '../../../product/component/search_bar.dart';
-import '../../../product/text_style/text_style.dart';
-import '../../best_seller/model/model_best_seller.dart';
-import '../model/model_category.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key, required this.token});
+  const HomeView({required this.token});
   final String token;
 
   @override
@@ -21,25 +15,16 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends HomeViewModel {
-  int _selectedIndex = -1;
-  bool _isLoading = false;
-
-  List<CategoryModel>? categoriesList = [];
-  List<BestSellerModel>? productList = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 92,
-        backgroundColor: Colors.white,
-        elevation: 0,
         leading: Padding(
           padding: EdgeInsets.only(left: 20.h),
           child: SizedBox(
             width: 50.w,
             height: 32.h,
-            child: LogoSVG(),
+            child: logoSVG(),
           ),
         ),
         actions: [
@@ -50,7 +35,10 @@ class _HomeViewState extends HomeViewModel {
             ).h,
             child: Text(
               'Catalog',
-              style: CustomTextStyle.generalButtonTextStyleBlueMagentaBlack20,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: colorBlack()),
             ),
           ),
         ],
@@ -79,7 +67,7 @@ class _HomeViewState extends HomeViewModel {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: SearchBar(),
+                  child: const SearchBar(),
                 ),
                 Expanded(
                   child: Padding(
@@ -107,10 +95,11 @@ class _HomeViewState extends HomeViewModel {
               children: [
                 Text(
                   resourceCategory[index].name ?? "",
-                  style: CustomTextStyle.generalButtonTextStyle,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 TextButton(
                   onPressed: () {
+                    //Navigator.pushNamed(context, "/bestSeller");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -125,7 +114,7 @@ class _HomeViewState extends HomeViewModel {
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
-                      color: ColorCinnabar(),
+                      color: colorCinnabar(),
                     ),
                   ),
                 )
@@ -158,12 +147,16 @@ class _HomeViewState extends HomeViewModel {
                                 child: Column(
                                   children: [
                                     Text(
-                                      //
-                                      resourceProductHome[index][index1].name ??
-                                          "",
-                                      style: CustomTextStyle
-                                          .generalButtonTextStyle12,
-                                    ),
+                                        //
+                                        resourceProductHome[index][index1]
+                                                .name ??
+                                            "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: colorBlack())),
                                     SizedBox(
                                       height: 4.h,
                                     ),
@@ -171,8 +164,13 @@ class _HomeViewState extends HomeViewModel {
                                       resourceProductHome[index][index1]
                                               .author ??
                                           "",
-                                      style: CustomTextStyle
-                                          .generalButtonTextStyle10,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                              color: colorBlack(),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(
                                       height: 44.h,
@@ -181,8 +179,11 @@ class _HomeViewState extends HomeViewModel {
                                       resourceProductHome[index][index1]
                                           .price
                                           .toString(),
-                                      style: CustomTextStyle
-                                          .generalButtonTextStyleBlueMagenta16,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
@@ -205,7 +206,7 @@ class _HomeViewState extends HomeViewModel {
   ListView BookTypesButton() {
     bool isPressed;
     return ListView.builder(
-        itemCount: BookTypes.length,
+        itemCount: bookTypes.length,
         itemExtent: 120,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
@@ -215,7 +216,7 @@ class _HomeViewState extends HomeViewModel {
               key: ValueKey(getButtonName(index)),
               onPressed: () {
                 setState(() {
-                  _selectedIndex = index;
+                  selectedIndex = index;
                 });
               },
               style: ButtonStyle(
@@ -224,17 +225,17 @@ class _HomeViewState extends HomeViewModel {
                     if (states.contains(MaterialState.pressed)) {
                       return Colors.red;
                     } else {
-                      return _selectedIndex == index
-                          ? ColorBlueMagenta()
-                          : Color(0xFFF4F4FF);
+                      return selectedIndex == index
+                          ? colorBlueMagenta()
+                          : colorLightWhite1();
                     }
                   },
                 ),
               ),
               child: Text(
                 getButtonName(index),
-                style: const TextStyle(
-                    color: Colors.black,
+                style: TextStyle(
+                    color: colorBlack(),
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),

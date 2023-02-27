@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobileapp/feature/best_seller/view_model/best_seller_viewmodel.dart';
-import 'package:mobileapp/feature/home/viewmodel/home_viewmodel.dart';
-import 'package:mobileapp/product/text_style/text_style.dart';
-
 import '../../../product/component/general_color.dart';
 import '../../../product/component/general_paddin.dart';
 import '../../../product/component/search_bar.dart';
 import '../../book_details/view/book_details.dart';
-import '../../home/model/model_category.dart';
 import '../model/model_best_seller.dart';
 
 class BestSellerPage extends StatefulWidget {
@@ -19,7 +15,6 @@ class BestSellerPage extends StatefulWidget {
       required this.token});
   final List<BestSellerModel> list;
   final String token;
-
   final String title;
 
   @override
@@ -31,15 +26,12 @@ class _BestSellerPageState extends BestSellerViewModel {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 92,
-        backgroundColor: Colors.white,
-        elevation: 0,
         leading: Padding(
           padding: EdgeInsets.only(left: 20.h),
           child: SizedBox(
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
-              color: const Color(0xFF090937),
+              color: colorNavyBlue(),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -49,13 +41,16 @@ class _BestSellerPageState extends BestSellerViewModel {
             padding: EdgeInsets.only(right: 20.w, top: 40.h, bottom: 20.h),
             child: Text(
               widget.title,
-              style: CustomTextStyle.generalButtonTextStyleBlueMagentaBlack20,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: colorBlack()),
             ),
           )
         ],
       ),
       body: Padding(
-        padding: GeneralPadding(),
+        padding: generalPadding(),
         child: Column(
           children: [
             const SearchBar(),
@@ -70,62 +65,69 @@ class _BestSellerPageState extends BestSellerViewModel {
                 ),
                 itemCount: widget.list.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BookDetailsView(
-                            token: widget.token,
-                            //list: [],
-                            content: widget.list[index],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      color: ColorLightWhite1(),
-                      child: Column(
-                        children: [
-                          Image.network(widget.list[index].cover ?? ""),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        widget.list[index].name ?? "",
-                                        style: CustomTextStyle
-                                            .generalButtonTextStyle10,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text(widget.list[index].author ?? "",
-                                          style: CustomTextStyle
-                                              .generalButtonTextStyle8),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      widget.list[index].price.toString(),
-                                      style: CustomTextStyle
-                                          .generalButtonTextStyleBlueMagent16,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return bookDetailsCard(context, index);
                 },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  InkWell bookDetailsCard(BuildContext context, int index) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookDetailsView(
+              token: widget.token,
+              //list: [],
+              content: widget.list[index],
+            ),
+          ),
+        );
+      },
+      child: Card(
+        color: colorLightWhite1(),
+        child: Column(
+          children: [
+            Image.network(widget.list[index].cover ?? ""),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.list[index].name ?? "",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: colorBlack(), fontSize: 10),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(widget.list[index].author ?? "",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(fontSize: 8, color: colorBlack())),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        widget.list[index].price.toString(),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

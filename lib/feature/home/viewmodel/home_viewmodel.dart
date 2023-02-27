@@ -9,8 +9,10 @@ abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin {
   late final ICategoryService categoryService;
   List<CategoryModel> resourceCategory = [];
   List<List<BestSellerModel>> resourceProductHome = [];
-  // ignore: non_constant_identifier_names
-  final List<String> BookTypes = [
+  int selectedIndex = -1;
+  bool isLoading = false;
+
+  final List<String> bookTypes = [
     'All',
     'Classic',
     'Horror',
@@ -18,11 +20,12 @@ abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin {
     'Sci-Fi'
   ];
 
-  String getButtonName(int index) {
-    return BookTypes[index];
-  }
+  List<CategoryModel>? categoriesList = [];
+  List<BestSellerModel>? productList = [];
 
-  bool isLoading = false;
+  String getButtonName(int index) {
+    return bookTypes[index];
+  }
 
   void changeLoading() {
     setState(() {

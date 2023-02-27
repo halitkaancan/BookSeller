@@ -15,7 +15,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorLightWhite1(),
+      color: colorLightWhite1(),
       child: Row(
         children: const [
           Icon(Icons.search),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:mobileapp/feature/home/view/homeview.dart';
 import 'package:mobileapp/feature/login/viewmodel/login_viewmodel.dart';
+import 'package:mobileapp/product/component/general_pictures.dart';
 import '../../../product/component/general_button.dart';
 import '../../../product/component/general_color.dart';
 import '../../../product/component/general_paddin.dart';
@@ -19,15 +18,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends LoginViewModel {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _obscureText = true;
-  void login(String email, password) {
-    try {} catch (e) {
-      print(e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +27,7 @@ class _LoginViewState extends LoginViewModel {
             constraints: BoxConstraints(minHeight: constraint.maxHeight),
             child: IntrinsicHeight(
               child: Padding(
-                padding: GeneralPadding(),
+                padding: generalPadding(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -46,17 +36,17 @@ class _LoginViewState extends LoginViewModel {
                       child: SizedBox(
                         width: 100.w,
                         height: 65.h,
-                        child: SvgPicture.asset('assets/logo.svg'),
+                        child: logoSVG(),
                       ),
                     ),
                     heightSpace(115),
                     SizedBox(
                       height: 80.h,
                     ),
-                    textTypes("E-mail", 16),
+                    const TextTypes(text: "E-mail", fontSize: 16),
                     heightSpace(8),
                     TextFormField(
-                      controller: _emailController,
+                      controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         filled: true,
@@ -67,17 +57,17 @@ class _LoginViewState extends LoginViewModel {
                     ),
                     heightSpace(24),
                     TextFormField(
-                      obscureText: _obscureText,
-                      controller: _passwordController,
+                      obscureText: obscureText,
+                      controller: passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
-                              _obscureText = !_obscureText;
+                              obscureText = !obscureText;
                             });
                           },
-                          icon: Icon(_obscureText
+                          icon: Icon(obscureText
                               ? Icons.visibility
                               : Icons.visibility_off),
                         ),
@@ -94,7 +84,7 @@ class _LoginViewState extends LoginViewModel {
                           child: Column(
                             children: [
                               CheckboxListTile(
-                                activeColor: ColorBlueMagenta(),
+                                activeColor: colorBlueMagenta(),
                                 title: const Text(
                                   'Remember me',
                                   style: TextStyle(color: Color(0xFF6251DD)),
@@ -128,9 +118,8 @@ class _LoginViewState extends LoginViewModel {
                       buttonText: "Login",
                       onPressed: () async {
                         await loginButton(
-                          //trim:stringin başındaki ve sonundaki boşlukları kaldırır
-                          _emailController.text.trim(),
-                          _passwordController.text.trim(),
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
                         );
                         checkToken();
                       },
@@ -147,20 +136,26 @@ class _LoginViewState extends LoginViewModel {
   }
 
   SizedBox heightSpace(double HeightSpace) {
-    return SizedBox(
-      height: HeightSpace.h,
-    );
+    return SizedBox(height: HeightSpace.h);
   }
+}
 
-  Row textTypes(String text, double fontSize) {
+class TextTypes extends StatelessWidget {
+  final String text;
+  final double fontSize;
+
+  const TextTypes({required this.text, required this.fontSize});
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         SizedBox(
-          child: Text(
-            "$text",
-            style:
-                TextStyle(fontSize: fontSize.sp, fontWeight: FontWeight.bold),
-          ),
+          child: Text(text.toString(),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Colors.white)),
         ),
       ],
     );

@@ -1,7 +1,7 @@
 class CategoryModel {
-  int? id;
-  String? name;
-  String? createdAt;
+  late final int? id;
+  late final String? name;
+  late final String? createdAt;
 
   CategoryModel({this.id, this.name, this.createdAt});
 

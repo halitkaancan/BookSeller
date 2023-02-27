@@ -19,7 +19,7 @@ abstract class SplashModelView extends State<SplashView> with ProjectDioMixin {
     } else {
       // Token yoksa giriş sayfasına yönlendirin.
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginView()),
+          MaterialPageRoute(builder: (context) => const LoginView()),
           (route) => route.isFirst);
     }
   }
