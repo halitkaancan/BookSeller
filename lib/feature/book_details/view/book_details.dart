@@ -57,19 +57,19 @@ class _BookDetailsViewState extends BookDetailsViewModel {
               children: [
                 Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 110.h),
-                      child: Row(
-                        children: [
-                          Container(
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 90.w),
+                          child: Container(
                               width: 150.w,
                               height: 225.h,
                               child: Image.network(widget.content.cover ?? "")),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 45.w, bottom: 170.h),
+                      padding: EdgeInsets.only(left: 50.w, bottom: 170.h),
                       child: Column(
                         children: [
                           CircleAvatar(
@@ -99,44 +99,11 @@ class _BookDetailsViewState extends BookDetailsViewModel {
                     )
                   ],
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Text(
-                    widget.content.name ?? "",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: colorBlack()),
-                  ),
-                  SizedBox(height: 20.h),
-                ]),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Opacity(
-                    opacity: 0.6,
-                    child: Text(widget.content.author ?? "",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: colorBlack())),
-                  )
-                ]),
+                BookName(widget: widget),
+                BookAuthorName(widget: widget),
                 SizedBox(height: 10.h),
-                Row(children: [
-                  Container(
-                    width: 350.w,
-                    height: 208.h,
-                    child: Text(
-                      widget.content.description ?? "",
-                      maxLines: 7,
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(color: colorBlack()),
-                    ),
-                  )
-                ]),
-                SizedBox(height: 90.h),
+                BookDescription(widget: widget),
+                SizedBox(height: 75.h),
                 GeneralButton(
                   buttonText: widget.content.price.toString(),
                   secondText: "Buy Now",
@@ -147,5 +114,80 @@ class _BookDetailsViewState extends BookDetailsViewModel {
         ),
       ),
     );
+  }
+}
+
+class BookDescription extends StatelessWidget {
+  const BookDescription({
+    super.key,
+    required this.widget,
+  });
+
+  final BookDetailsView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Container(
+        width: 350.w,
+        height: 208.h,
+        child: Text(
+          widget.content.description ?? "",
+          maxLines: 7,
+          textAlign: TextAlign.left,
+          softWrap: true,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: colorBlack()),
+        ),
+      )
+    ]);
+  }
+}
+
+class BookAuthorName extends StatelessWidget {
+  const BookAuthorName({
+    super.key,
+    required this.widget,
+  });
+
+  final BookDetailsView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Opacity(
+        opacity: 0.6,
+        child: Text(widget.content.author ?? "",
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: colorBlack())),
+      )
+    ]);
+  }
+}
+
+class BookName extends StatelessWidget {
+  const BookName({
+    super.key,
+    required this.widget,
+  });
+
+  final BookDetailsView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(
+        widget.content.name ?? "",
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge
+            ?.copyWith(color: colorBlack()),
+      ),
+      SizedBox(height: 20.h),
+    ]);
   }
 }
